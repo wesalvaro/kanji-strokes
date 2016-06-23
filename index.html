@@ -52,7 +52,7 @@ const kanji = function() {
       obj.onload = () => {
         const d = obj.contentDocument;
         const style = d.createElementNS('http://www.w3.org/2000/svg', 'style');
-        const scheme = ['D32F2F', 'F57C00', 'FBC02D', '388E3C', '1976D2', '303F9F', '512DA8'];
+        const scheme = ['1976D2', 'D32F2F', '388E3C', 'FBC02D', '512DA8', 'F57C00'];
         const pathRules = scheme.map((c, i) => `path:nth-child(${i + 1}) {
           stroke: #${c};
         }`).join('\n');
