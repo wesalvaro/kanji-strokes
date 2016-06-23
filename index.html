@@ -48,6 +48,22 @@ const kanji = function() {
     template: '<object type="image/svg+xml" ng-attr-data="{{ url }}"></object>',
     link: function(s, e) {
       s.url = getSvgUrl(s.data);
+      const obj = e.children()[0];
+      obj.onload = () => {
+        const d = obj.contentDocument;
+        const style = d.createElementNS('http://www.w3.org/2000/svg', 'style');
+        const scheme = ['D32F2F', 'F57C00', 'FBC02D', '388E3C', '1976D2', '303F9F', '512DA8'];
+        const pathRules = scheme.map((c, i) => `path:nth-child(${i + 1}) {
+          stroke: #${c};
+        }`).join('\n');
+        style.textContent = `
+          ${pathRules}
+          text {
+            font-family: Noto, Roboto, sans-serif;
+          }
+        `;
+        d.children[0].appendChild(style);
+      };
     },
   };
 };
