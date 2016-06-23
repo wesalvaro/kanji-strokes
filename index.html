@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      font-family: Noto;
+    }
+    
+    draw-kanji > object {
+      width: 100%;
+    }
+    
+    input {
+      padding: 5px;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    
+    path {
+      stroke: blue;
+    }
+  </style>
+</head>
+<body ng-app="strokes">
+
+<input ng-model="kanji">
+
+<draw-kanji data="k" ng-repeat="k in kanji"></draw-kanji>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+<script>
+(function() {
+
+const kanji = function() {
+  const getSvgUrl = (str) => {
+    const cp = str.charCodeAt(0).toString(16);
+    return `https://cdn.rawgit.com/KanjiVG/kanjivg/r20160426/kanji/0${cp}.svg`;
+  };
+  return {
+    scope: {
+      'data': '=',
+    },
+    template: '<object type="image/svg+xml" ng-attr-data="{{ url }}"></object>',
+    link: function(s, e) {
+      s.url = getSvgUrl(s.data);
+    },
+  };
+};
+
+
+angular.module('strokes', [])
+  .run(function($rootScope) {
+    $rootScope.kanji = '東京';
+  })
+  .directive('drawKanji', kanji)
+;
+
+}());
+
+</script>
+
+</body>
+</html>
