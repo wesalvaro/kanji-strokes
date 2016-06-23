@@ -2,17 +2,22 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="viewport" content="width=500, initial-scale=1, maximum-scale=1">
   <style>
     body {
       display: flex;
       flex-direction: column;
-      flex-grow: 1;
       font-family: Noto;
     }
     
+    #strokes {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    
     draw-kanji > object {
-      width: 100%;
+      width: 500px;
     }
     
     input {
@@ -20,17 +25,15 @@
       font-size: 20px;
       margin-bottom: 10px;
     }
-    
-    path {
-      stroke: blue;
-    }
   </style>
 </head>
 <body ng-app="strokes">
 
 <input ng-model="kanji">
 
-<draw-kanji data="k" ng-repeat="k in kanji"></draw-kanji>
+<div id="strokes">
+  <draw-kanji data="k" ng-repeat="k in kanji"></draw-kanji>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
 <script>
