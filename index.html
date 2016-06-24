@@ -57,16 +57,54 @@ const kanji = function() {
       const obj = e.children()[0];
       obj.onload = () => {
         const d = obj.contentDocument;
-        const style = d.createElementNS('http://www.w3.org/2000/svg', 'style');
         const scheme = ['1976D2', 'D32F2F', '388E3C', 'FBC02D', '512DA8', 'F57C00'];
-        const pathRules = scheme.map((c, i) => `path:nth-child(${i + 1}) {
+        const pathColors = scheme.map((c, i) => `path:nth-child(${i + 1}) {
           stroke: #${c};
         }`).join('\n');
+        const timePerUnit = .01;
+        let startTime = 0;
+        const paths = d.querySelectorAll('path')
+        const pathAnimations = Array.prototype.map.call(paths, (path) => {
+          const length = path.getTotalLength();
+          const id = path.id.replace(/(:|-)/g, '\\$1');
+          const duration = timePerUnit * length;
+          path.style.animationDelay = `${startTime}s`;
+          path.style.strokeDasharray = `${length}`;
+          path.style.animationDuration = `${duration}s`;
+          startTime += duration;
+          return `svg:hover #${id} {
+            stroke-dashoffset: ${length};
+          }`;
+        }).join('\n');
+        const style = d.createElementNS('http://www.w3.org/2000/svg', 'style');
         style.textContent = `
-          ${pathRules}
+          ${pathColors}
           text {
             font-family: Noto, Roboto, sans-serif;
           }
+          path {
+            stroke-dashoffset: 0;
+          }
+          svg:hover path {
+            opacity: 0;
+            animation: draw 1s ease-in-out forwards;
+          }
+          text {
+            transition: .15s;
+          }
+          svg:hover text {
+            opacity: 0;
+          }
+          @keyframes draw {
+            0% {
+              opacity: 1;
+            }
+            to {
+              opacity: 1;
+              stroke-dashoffset: 0;
+            }
+          }
+          ${pathAnimations}
         `;
         d.children[0].appendChild(style);
       };
