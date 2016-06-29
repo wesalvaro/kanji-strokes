@@ -35,7 +35,7 @@
 <input ng-model="kanji">
 
 <div id="strokes">
-  <draw-kanji data="k" ng-repeat="k in kanji"></draw-kanji>
+  <draw-kanji data="k" ng-repeat="k in kanji track by $index"></draw-kanji>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
