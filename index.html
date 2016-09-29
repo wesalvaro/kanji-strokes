@@ -114,8 +114,8 @@ const kanji = function() {
 
 
 angular.module('strokes', [])
-  .run(function($rootScope) {
-    $rootScope.kanji = '東京';
+  .run(function($rootScope, $location) {
+    $rootScope.kanji = $location.hash() || '東京';
   })
   .directive('drawKanji', kanji)
 ;
